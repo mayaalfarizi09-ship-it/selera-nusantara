@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://selera-nusantara.test/sitemap.xml
