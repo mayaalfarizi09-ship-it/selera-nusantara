@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Menu — Selera Nusantara'">
+<x-layouts.app :title="'Menu - Selera Nusantara'">
 
     <section class="relative flex h-[45vh] min-h-[320px] items-center justify-center overflow-hidden bg-ink">
         <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop" alt="Menu Selera Nusantara" class="absolute inset-0 h-full w-full object-cover">
@@ -46,7 +46,7 @@
                         @if ($menu->featured)
                             <span class="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Unggulan</span>
                         @endif
-                        <span class="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-ink">{{ $menu->category->name }}</span>
+                        <span class="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-ink">{{ $menu->category->name ?? '-' }}</span>
                     </div>
                     <div class="p-6">
                         <div class="flex items-start justify-between gap-2">
@@ -57,7 +57,13 @@
                             </span>
                         </div>
                         <div class="mt-2 line-clamp-2 text-sm text-ink/60">{!! $menu->description !!}</div>
-                        <p class="mt-4 font-heading text-lg font-bold text-primary">{{ $menu->formatted_price }}</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <p class="font-heading text-lg font-bold text-primary">{{ $menu->formatted_price }}</p>
+                            <a href="{{ route('menu.show', $menu->slug) }}"
+                               class="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-white">
+                                Detail
+                            </a>
+                        </div>
                     </div>
                 </div>
             @empty

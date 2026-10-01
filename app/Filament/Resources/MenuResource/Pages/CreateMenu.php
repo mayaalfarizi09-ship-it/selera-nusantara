@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\MenuResource\Pages;
 
-use App\Filament\Resources\MenuResource;
+use App\Filament\Resources\MenuResource\MenuResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateMenu extends CreateRecord

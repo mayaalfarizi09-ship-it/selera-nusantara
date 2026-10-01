@@ -28,10 +28,10 @@ class MenuImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Import menu selesai: ' . number_format($import->successful_rows) . ' baris berhasil diimport.';
+        $body = 'Import menu selesai: '.number_format($import->successful_rows).' baris berhasil diimport.';
 
         if ($failed = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failed) . ' baris gagal diimport.';
+            $body .= ' '.number_format($failed).' baris gagal diimport.';
         }
 
         return $body;

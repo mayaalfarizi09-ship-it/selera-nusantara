@@ -1,11 +1,13 @@
 @php
     $navItems = [
-        ['label' => 'Beranda', 'route' => 'home'],
-        ['label' => 'Tentang Kami', 'route' => 'about'],
+        ['label' => 'Home', 'route' => 'home'],
         ['label' => 'Menu', 'route' => 'menu.index'],
+        ['label' => 'Tentang Kami', 'route' => 'about'],
         ['label' => 'Galeri', 'route' => 'gallery'],
-        ['label' => 'Tim Kami', 'route' => 'team'],
-        ['label' => 'Kontak', 'route' => 'contact'],
+        ['label' => 'Tim', 'route' => 'team'],
+        ['label' => 'Testimonial', 'route' => 'testimonials'],
+        ['label' => 'Reservasi', 'route' => 'reservation.index'],
+        ['label' => 'Contact', 'route' => 'contact'],
     ];
 @endphp
 
@@ -21,7 +23,7 @@
             <template x-if="solid"><x-logo /></template>
         </a>
 
-        <nav class="hidden items-center gap-8 lg:flex">
+        <nav class="hidden items-center gap-6 xl:flex">
             @foreach ($navItems as $item)
                 <a href="{{ route($item['route']) }}"
                    :class="solid ? (@js(request()->routeIs($item['route'])) ? 'text-primary' : 'text-ink hover:text-primary') : 'text-white hover:text-white/70'"
@@ -31,13 +33,13 @@
             @endforeach
         </nav>
 
-        <div class="hidden lg:block">
+        <div class="hidden xl:block">
             <a href="{{ route('reservation.index') }}" class="btn-primary ripple !px-6 !py-2.5 text-sm">
                 Reservasi
             </a>
         </div>
 
-        <button @click="open = !open" :class="solid ? 'text-ink' : 'text-white'" class="lg:hidden" aria-label="Buka menu">
+        <button @click="open = !open" :class="solid ? 'text-ink' : 'text-white'" class="xl:hidden" aria-label="Buka menu">
             <svg x-show="!open" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -48,7 +50,7 @@
     </div>
 
     {{-- Mobile menu --}}
-    <div x-show="open" x-cloak x-transition class="border-t border-border bg-white px-6 py-4 lg:hidden">
+    <div x-show="open" x-cloak x-transition class="max-h-[80vh] overflow-y-auto border-t border-border bg-white px-6 py-4 xl:hidden">
         <nav class="flex flex-col gap-4">
             @foreach ($navItems as $item)
                 <a href="{{ route($item['route']) }}" class="font-heading text-sm font-medium text-ink hover:text-primary">

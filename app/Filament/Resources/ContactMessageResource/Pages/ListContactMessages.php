@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ContactMessageResource\Pages;
 
-use App\Filament\Resources\ContactMessageResource;
+use App\Filament\Resources\ContactMessageResource\ContactMessageResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListContactMessages extends ListRecords

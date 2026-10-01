@@ -5,14 +5,14 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class SettingsPage extends Page implements HasForms
 {
@@ -37,8 +37,8 @@ class SettingsPage extends Page implements HasForms
             Section::make('Informasi Restoran')->schema([
                 TextInput::make('restaurant_name')->required(),
                 TextInput::make('tagline'),
-                FileUpload::make('logo')->image()->directory('settings'),
-                FileUpload::make('favicon')->image()->directory('settings'),
+                FileUpload::make('logo')->image()->directory('settings')->disk('public'),
+                FileUpload::make('favicon')->image()->directory('settings')->disk('public'),
             ])->columns(2),
             Section::make('Kontak')->schema([
                 Textarea::make('address')->rows(2),

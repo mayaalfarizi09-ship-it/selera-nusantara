@@ -25,10 +25,10 @@ class MenuExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Export menu selesai: ' . number_format($export->successful_rows) . ' baris berhasil diexport.';
+        $body = 'Export menu selesai: '.number_format($export->successful_rows).' baris berhasil diexport.';
 
         if ($failed = $export->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failed) . ' baris gagal diexport.';
+            $body .= ' '.number_format($failed).' baris gagal diexport.';
         }
 
         return $body;

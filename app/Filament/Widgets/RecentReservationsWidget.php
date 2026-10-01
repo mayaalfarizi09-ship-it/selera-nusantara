@@ -22,7 +22,7 @@ class RecentReservationsWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('phone')->label('Telepon'),
                 Tables\Columns\TextColumn::make('guest')->label('Tamu'),
                 Tables\Columns\TextColumn::make('reservation_date')->date()->label('Tanggal'),
-                Tables\Columns\BadgeColumn::make('status')->colors([
+                Tables\Columns\TextColumn::make('status')->badge()->colors([
                     'warning' => 'pending',
                     'success' => 'confirmed',
                     'danger' => 'cancelled',

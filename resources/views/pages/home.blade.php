@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Selera Nusantara — Restoran Nusantara Premium'">
+<x-layouts.app :title="'Selera Nusantara - Restoran Nusantara Premium'">
 
     {{-- ============ HERO BANNER (Full Screen, Big Photo) ============ --}}
     <section class="relative flex h-screen min-h-[640px] w-full items-center justify-center overflow-hidden bg-ink">
@@ -50,10 +50,10 @@
 
             <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <a href="{{ route('menu.index') }}" class="btn-primary ripple">
-                    Jelajahi Menu
+                    Lihat Menu
                 </a>
                 <a href="{{ route('reservation.index') }}" class="btn-outline ripple">
-                    Reservasi Meja
+                    Reservasi Sekarang
                 </a>
             </div>
         </div>
@@ -83,7 +83,7 @@
                 <p class="mt-5 leading-relaxed text-ink/70">
                     Selera Nusantara lahir dari kecintaan pada kekayaan kuliner Indonesia. Setiap hidangan kami
                     diracik dari resep otentik turun-temurun, dipadukan dengan bahan pilihan dan sentuhan penyajian
-                    modern — menghadirkan pengalaman bersantap yang tak terlupakan bagi keluarga dan kolega Anda.
+                    modern - menghadirkan pengalaman bersantap yang tak terlupakan bagi keluarga dan kolega Anda.
                 </p>
                 <ul class="mt-6 space-y-3">
                     @foreach (['Bahan-bahan pilihan dan segar setiap hari', 'Resep otentik warisan nusantara', 'Suasana premium yang nyaman dan elegan'] as $point)
@@ -102,8 +102,40 @@
         </div>
     </section>
 
-    {{-- ============ FEATURED MENU ============ --}}
+    {{-- ============ CATEGORY SECTION ============ --}}
     <section class="bg-accent py-24">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-xl text-center" data-aos="fade-up">
+                <span class="section-eyebrow">Kategori</span>
+                <h2 class="section-heading">Jelajahi Ragam Kuliner Nusantara</h2>
+                <p class="mt-4 text-ink/70">Dari laut hingga darat, dari pedas hingga manis - temukan favorit Anda.</p>
+            </div>
+
+            <div class="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+                @forelse ($categories as $cat)
+                    <a href="{{ route('menu.index', ['category' => $cat->slug]) }}" data-aos="fade-up" data-aos-delay="{{ $loop->index * 60 }}"
+                       class="group rounded-2xl border border-border bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-primary/10">
+                            @if ($cat->image)
+                                <img src="{{ asset('storage/'.$cat->image) }}" alt="{{ $cat->name }}" class="h-full w-full object-cover">
+                            @else
+                                <svg class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+                                </svg>
+                            @endif
+                        </div>
+                        <h3 class="mt-4 font-heading text-sm font-semibold group-hover:text-primary">{{ $cat->name }}</h3>
+                        <p class="mt-1 text-xs text-ink/50">{{ $cat->menus_count }} menu</p>
+                    </a>
+                @empty
+                    <p class="col-span-4 text-center text-ink/50">Belum ada kategori.</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- ============ FEATURED MENU ============ --}}
+    <section class="py-24">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-xl text-center" data-aos="fade-up">
                 <span class="section-eyebrow">Menu Pilihan</span>
@@ -119,6 +151,7 @@
                             <img src="{{ $menu->image ? asset('storage/'.$menu->image) : 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=800&auto=format&fit=crop' }}"
                                  alt="{{ $menu->name }}" class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy">
                             <span class="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Unggulan</span>
+                            <span class="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-ink">{{ $menu->category->name ?? '-' }}</span>
                         </div>
                         <div class="p-6">
                             <div class="flex items-start justify-between gap-2">
@@ -129,7 +162,10 @@
                                 </span>
                             </div>
                             <div class="mt-2 line-clamp-2 text-sm text-ink/60">{!! $menu->description !!}</div>
-                            <p class="mt-4 font-heading text-lg font-bold text-primary">{{ $menu->formatted_price }}</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <p class="font-heading text-lg font-bold text-primary">{{ $menu->formatted_price }}</p>
+                                <a href="{{ route('menu.show', $menu->slug) }}" class="text-sm font-semibold text-primary hover:underline">Detail</a>
+                            </div>
                         </div>
                     </div>
                 @empty
@@ -207,19 +243,23 @@
         </div>
 
         <div class="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">
-            @php
-                $previewImages = [
+            @forelse ($galleries as $item)
+                <div data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}" class="group overflow-hidden rounded-xl">
+                    <img src="{{ $item->image ? asset('storage/'.$item->image) : 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=600&auto=format&fit=crop' }}"
+                         alt="{{ $item->title }}" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+                </div>
+            @empty
+                @foreach ([
                     'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=600&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=600&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=600&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=600&auto=format&fit=crop',
-                ];
-            @endphp
-            @foreach ($previewImages as $img)
-                <div data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}" class="group overflow-hidden rounded-xl">
-                    <img src="{{ $img }}" alt="Galeri Selera Nusantara" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                </div>
-            @endforeach
+                ] as $img)
+                    <div data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}" class="group overflow-hidden rounded-xl">
+                        <img src="{{ $img }}" alt="Galeri Selera Nusantara" class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+                    </div>
+                @endforeach
+            @endforelse
         </div>
 
         <div class="mt-10 text-center" data-aos="fade-up">
@@ -229,8 +269,41 @@
         </div>
     </section>
 
-    {{-- ============ TESTIMONIALS ============ --}}
+    {{-- ============ TEAM ============ --}}
     <section class="bg-accent py-24">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-xl text-center" data-aos="fade-up">
+                <span class="section-eyebrow">Tim Kami</span>
+                <h2 class="section-heading">Di Balik Setiap Hidangan</h2>
+                <p class="mt-4 text-ink/70">Orang-orang terbaik yang membuat pengalaman bersantap Anda berkesan.</p>
+            </div>
+
+            <div class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                @forelse ($team as $member)
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index % 3 * 100 }}"
+                         class="group overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="{{ $member->photo ? asset('storage/'.$member->photo) : 'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?q=80&w=600&auto=format&fit=crop' }}"
+                                 alt="{{ $member->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="font-heading text-lg font-semibold">{{ $member->name }}</h3>
+                            <p class="mt-1 text-sm font-medium text-primary">{{ $member->position }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p class="col-span-3 text-center text-ink/50">Data tim belum tersedia.</p>
+                @endforelse
+            </div>
+
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <a href="{{ route('team') }}" class="btn-primary ripple">Kenali Tim Kami</a>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============ TESTIMONIALS ============ --}}
+    <section class="py-24">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-xl text-center" data-aos="fade-up">
                 <span class="section-eyebrow">Testimoni</span>
@@ -239,7 +312,7 @@
 
             <div class="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
                 @forelse ($testimonials->take(3) as $t)
-                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}" class="rounded-2xl bg-white p-8 shadow-sm">
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}" class="rounded-2xl border border-border bg-white p-8 shadow-sm">
                         <div class="flex gap-1 text-primary">
                             @for ($i = 0; $i < $t->rating; $i++)
                                 <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09L5.5 11.545.5 7.41l6.11-.89L10 1l3.39 5.52 6.11.89-5 4.135 1.378 6.545z"/></svg>
@@ -251,6 +324,10 @@
                 @empty
                     <p class="col-span-3 text-center text-ink/50">Belum ada testimoni.</p>
                 @endforelse
+            </div>
+
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <a href="{{ route('testimonials') }}" class="btn-primary ripple">Semua Testimonial</a>
             </div>
         </div>
     </section>
@@ -265,6 +342,53 @@
             <h2 class="mt-3 font-heading text-3xl font-bold text-white md:text-4xl">Pesan Meja Anda Sekarang</h2>
             <p class="mt-4 text-white/70">Amankan meja terbaik untuk momen spesial Anda bersama keluarga dan orang tersayang.</p>
             <a href="{{ route('reservation.index') }}" class="btn-primary ripple mt-8 inline-flex">Reservasi Sekarang</a>
+        </div>
+    </section>
+
+    {{-- ============ CONTACT CTA ============ --}}
+    <section class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+        <div class="grid items-center gap-14 lg:grid-cols-2">
+            <div data-aos="fade-right">
+                <span class="section-eyebrow">Hubungi Kami</span>
+                <h2 class="section-heading">Ada yang Bisa Kami Bantu?</h2>
+                <p class="mt-5 leading-relaxed text-ink/70">
+                    Pertanyaan seputar menu, reservasi, atau acara khusus? Tim kami siap membantu Anda.
+                </p>
+
+                <div class="mt-8 space-y-4 text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 0 1 2-2h3l2 5-2 1a11 11 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5Z"/></svg>
+                        </span>
+                        <p class="text-ink/70">{{ $settings->phone ?? '(021) 555-1234' }}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4V4Zm0 0 8 8 8-8"/></svg>
+                        </span>
+                        <p class="text-ink/70">{{ $settings->email ?? 'info@selera-nusantara.test' }}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+                        </span>
+                        <p class="text-ink/70">{{ $settings->address ?? 'Jl. Kuliner Nusantara No. 88, Jakarta Selatan' }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+                    <a href="{{ route('contact') }}" class="btn-primary ripple">Halaman Contact</a>
+                    <a href="https://wa.me/{{ $settings->whatsapp ?? '6281234567890' }}" target="_blank" rel="noopener"
+                       class="btn-outline !border-primary !text-primary ripple hover:!bg-primary hover:!text-white">
+                        Chat WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <div data-aos="fade-left" class="overflow-hidden rounded-2xl border border-border">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1200&auto=format&fit=crop"
+                     alt="Suasana restoran Selera Nusantara" class="h-full min-h-[380px] w-full object-cover" loading="lazy">
+            </div>
         </div>
     </section>
 

@@ -36,14 +36,15 @@
                 <li><a href="{{ route('menu.index') }}" class="hover:text-primary">Menu</a></li>
                 <li><a href="{{ route('gallery') }}" class="hover:text-primary">Galeri</a></li>
                 <li><a href="{{ route('team') }}" class="hover:text-primary">Tim Kami</a></li>
+                <li><a href="{{ route('testimonials') }}" class="hover:text-primary">Testimonial</a></li>
                 <li><a href="{{ route('reservation.index') }}" class="hover:text-primary">Reservasi</a></li>
             </ul>
         </div>
 
         <div>
             <h4 class="mb-4 font-heading text-sm font-semibold uppercase tracking-wide text-white">Alamat</h4>
-            <p class="text-sm leading-relaxed text-white/60">{{ $settings->address ?? 'Jl. Radio Dalam No. 88, Jakarta Selatan, kecamatan kebayoran lama' }}</p>
-            <p class="mt-3 text-sm text-white/60">{{ $settings->phone ?? '(+62) 856 - 9266 - 6575 ' }}</p>
+            <p class="text-sm leading-relaxed text-white/60">{{ $settings->address ?? 'Jl. Kuliner Nusantara No. 88, Jakarta Selatan' }}</p>
+            <p class="mt-3 text-sm text-white/60">{{ $settings->phone ?? '(+62) 856-9266-6575' }}</p>
             <p class="text-sm text-white/60">{{ $settings->email ?? 'info@selera-nusantara.test' }}</p>
         </div>
 

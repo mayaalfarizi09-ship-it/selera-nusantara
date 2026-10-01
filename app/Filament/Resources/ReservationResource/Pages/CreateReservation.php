@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ReservationResource\Pages;
 
-use App\Filament\Resources\ReservationResource;
+use App\Filament\Resources\ReservationResource\ReservationResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateReservation extends CreateRecord

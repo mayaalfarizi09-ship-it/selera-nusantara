@@ -44,7 +44,25 @@ class DatabaseSeeder extends Seeder
         );
 
         $categories = [
-            'Makanan Tradisional', 'Ayam', 'Seafood', 'Sup', 'Dessert', 'Minuman',
+            'Seafood',
+            'Gorengan',
+            'Bakaran',
+            'Panggang',
+            'Rebus',
+            'Sambal',
+            'Makanan Tradisional',
+            'Minuman',
+        ];
+
+        $menuNames = [
+            'Seafood' => ['Udang Sambal Matah', 'Ikan Bakar Rempah', 'Cumi Saus Padang', 'Kepiting Saus Tiram'],
+            'Gorengan' => ['Ayam Goreng Lengkuas', 'Tahu Crispy Bumbu Rujak', 'Tempe Mendoan', 'Bakwan Jagung'],
+            'Bakaran' => ['Ayam Bakar Taliwang', 'Ikan Bakar Jimbaran', 'Sate Ayam Madura', 'Ribs Bakar Bumbu Bali'],
+            'Panggang' => ['Beef Panggang Lada Hitam', 'Ayam Panggang Woku', 'Ikan Panggang Bumbu Kuning', 'Udang Panggang Mentega'],
+            'Rebus' => ['Soto Betawi', 'Sop Buntut', 'Bakso Urat Special', 'Rawon Nguling'],
+            'Sambal' => ['Ayam Penyet Sambal Bawang', 'Belut Crispy Sambal Ijo', 'Paru Sambal Matah', 'Telur Balado'],
+            'Makanan Tradisional' => ['Nasi Tumpeng Komplit', 'Gudeg Jogja', 'Pempek Palembang', 'Rendang Daging'],
+            'Minuman' => ['Es Teh Manis Jumbo', 'Es Jeruk Peras', 'Wedang Jahe', 'Es Cincau Hijau'],
         ];
 
         foreach ($categories as $i => $name) {
@@ -56,51 +74,56 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            for ($j = 1; $j <= 4; $j++) {
-                $slug = \Str::slug("{$name} Spesial {$j}");
+            foreach ($menuNames[$name] ?? [] as $j => $menuName) {
                 Menu::firstOrCreate(
-                    ['slug' => $slug],
+                    ['slug' => \Illuminate\Support\Str::slug($menuName)],
                     [
                         'category_id' => $category->id,
-                        'name' => "{$name} Spesial {$j}",
-                        'description' => 'Diolah dari bahan pilihan dan resep otentik warisan nusantara.',
+                        'name' => $menuName,
+                        'description' => 'Diolah dari bahan pilihan dan resep otentik warisan nusantara, disajikan dengan sepenuh hati.',
                         'price' => rand(25, 150) * 1000,
                         'rating' => rand(40, 50) / 10,
-                        'featured' => $j === 1,
+                        'featured' => $j === 0,
                     ]
                 );
             }
         }
 
-        $team = [
-            ['name' => 'Budi Santoso', 'position' => 'Owner'],
-            ['name' => 'Chef Made Wirawan', 'position' => 'Executive Chef'],
-            ['name' => 'Siti Rahmawati', 'position' => 'Restaurant Manager'],
-            ['name' => 'Andi Prasetyo', 'position' => 'Cashier'],
-            ['name' => 'Dewi Lestari', 'position' => 'Waiter'],
-            ['name' => 'Rina Amelia', 'position' => 'Customer Service'],
-        ];
+        if (Team::count() === 0) {
+            $team = [
+                ['name' => 'Budi Santoso', 'position' => 'Owner'],
+                ['name' => 'Chef Made Wirawan', 'position' => 'Executive Chef'],
+                ['name' => 'Siti Rahmawati', 'position' => 'Restaurant Manager'],
+                ['name' => 'Andi Prasetyo', 'position' => 'Cashier'],
+                ['name' => 'Dewi Lestari', 'position' => 'Waiter'],
+                ['name' => 'Rina Amelia', 'position' => 'Customer Service'],
+            ];
 
-        foreach ($team as $i => $member) {
-            Team::create($member + ['sort_order' => $i]);
+            foreach ($team as $i => $member) {
+                Team::create($member + ['sort_order' => $i]);
+            }
         }
 
-        $galleryCategories = ['interior', 'food', 'kitchen', 'event', 'customer'];
-        foreach (range(1, 10) as $i) {
-            Gallery::create([
-                'title' => "Galeri {$i}",
-                'category' => $galleryCategories[array_rand($galleryCategories)],
-                'image' => 'images/placeholder-gallery.jpg',
-                'sort_order' => $i,
-            ]);
+        if (Gallery::count() === 0) {
+            $galleryCategories = ['interior', 'food', 'kitchen', 'event', 'customer'];
+            foreach (range(1, 10) as $i) {
+                Gallery::create([
+                    'title' => "Galeri {$i}",
+                    'category' => $galleryCategories[array_rand($galleryCategories)],
+                    'image' => 'images/placeholder-gallery.jpg',
+                    'sort_order' => $i,
+                ]);
+            }
         }
 
-        foreach (range(1, 6) as $i) {
-            Testimonial::create([
-                'name' => "Pelanggan {$i}",
-                'rating' => 5,
-                'message' => 'Rasa masakan yang autentik dengan suasana restoran yang elegan. Pelayanan sangat memuaskan!',
-            ]);
+        if (Testimonial::count() === 0) {
+            foreach (range(1, 6) as $i) {
+                Testimonial::create([
+                    'name' => "Pelanggan {$i}",
+                    'rating' => 5,
+                    'message' => 'Rasa masakan yang autentik dengan suasana restoran yang elegan. Pelayanan sangat memuaskan!',
+                ]);
+            }
         }
     }
 }
